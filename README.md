@@ -1,0 +1,1 @@
+This repo is related with [Messenger project](https://github.com/barpav/messenger).
