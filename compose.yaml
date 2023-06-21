@@ -1,0 +1,26 @@
+services:
+
+  users-v1:
+    image: ghcr.io/barpav/msg-users:v1
+    container_name: msg-users-v1
+    environment:
+      - MSG_STORAGE_HOST=storage-users-v1
+    ports:
+      - 8081:8080
+      - 9000:9000
+    depends_on:
+      storage-users-v1:
+        condition: service_healthy
+
+  storage-users-v1:
+    image: ghcr.io/barpav/msg-storage-users:v1
+    container_name: msg-storage-users-v1
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    expose:
+      - 5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 1s
+      timeout: 2s
+      retries: 5
