@@ -4,6 +4,7 @@ go 1.20
 
 require (
 	github.com/barpav/msg-users v0.0.0-20230617133927-6508e2099155
+	github.com/go-chi/chi/v5 v5.0.8
 	github.com/rs/zerolog v1.29.1
 	go.elastic.co/ecszerolog v0.1.0
 	google.golang.org/grpc v1.56.0

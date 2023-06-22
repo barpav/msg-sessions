@@ -2,9 +2,9 @@ package rest
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/rs/zerolog/log"
 
 	"github.com/barpav/msg-sessions/internal/data"
@@ -23,7 +23,7 @@ func (s *Service) Start(storage *data.Storage, users *users.Client) {
 
 	s.server = &http.Server{
 		Addr:    ":8080",
-		Handler: s,
+		Handler: s.operations(),
 	}
 
 	s.Shutdown = make(chan struct{}, 1)
@@ -43,42 +43,16 @@ func (s *Service) Stop(ctx context.Context) (err error) {
 	return s.server.Shutdown(ctx)
 }
 
-// https://barpav.github.io/msg-api-spec/#/sessions
-func (s *Service) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	authenticated, err := s.authenticated(r)
+// Swagger UI: https://barpav.github.io/msg-api-spec/#/sessions
+func (s *Service) operations() *chi.Mux {
+	ops := chi.NewRouter()
 
-	if err != nil {
-		log.Err(err).Msg(fmt.Sprintf("Authentication failed (issue: %s).", r.Header.Get("request-id")))
+	ops.Use(s.handleInternalServerError)
+	ops.Use(s.authenticate)
 
-		w.Header()["issue"] = []string{r.Header.Get("request-id")} // lowercase - non-canonical (vendor) header
-		w.WriteHeader(http.StatusInternalServerError)
-		return
-	}
+	ops.Post("/", s.startNewSession)
+	ops.Get("/", s.getActiveSessions)
+	ops.Delete("/", s.endSessions)
 
-	if !authenticated {
-		w.WriteHeader(http.StatusUnauthorized)
-		return
-	}
-
-	// URL handling is reverse proxy's concern
-	switch r.Method {
-	case http.MethodPost:
-		s.startNewSession(w, r)
-	case http.MethodGet:
-		s.getActiveSessions(w, r)
-	case http.MethodDelete:
-		s.endSessions(w, r)
-	default:
-		w.WriteHeader(http.StatusMethodNotAllowed)
-	}
-}
-
-func (s *Service) authenticated(r *http.Request) (ok bool, err error) {
-	userId, password, parsed := r.BasicAuth()
-
-	if parsed {
-		ok, err = s.users.ValidateCredentials(r.Context(), userId, password)
-	}
-
-	return ok, err
+	return ops
 }
