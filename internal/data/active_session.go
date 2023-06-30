@@ -105,13 +105,11 @@ func (m *ActiveSession) Delete(ctx context.Context, s *Storage) (err error) {
 
 	pipe := s.db.Pipeline()
 
-	pipe.HDel(ctx, sessionKeySum(m.Key), "user", "id")
+	pipe.Del(ctx, sessionKeySum(m.Key), sessionInfoKey(user, id))
 
 	pipe.SRem(ctx, sessionsIdsKey(user), id)
 
 	pipe.Decr(ctx, sessionsTotalKey(user))
-
-	// TODO: DELETE INFO
 
 	commands, err := pipe.Exec(ctx)
 
