@@ -2,37 +2,30 @@ package data
 
 import (
 	"context"
-	"database/sql"
+	"fmt"
+	"net"
+	"time"
+
+	"github.com/redis/go-redis/v9"
+	"github.com/rs/zerolog/log"
 )
 
 type Storage struct {
-	db  *sql.DB
 	cfg *Config
-	// queries map[string]*sql.Stmt
+	db  *redis.Client
 }
 
-func (s *Storage) Open() (err error) {
+func (s *Storage) Open() error {
 	s.cfg = &Config{}
 	s.cfg.Read()
-
-	err = s.connectToDatabase()
-
-	if err != nil {
-		return err
-	}
-
-	return s.prepareQueries()
+	return s.connectToDatabase()
 }
 
 func (s *Storage) Close(ctx context.Context) (err error) {
 	closed := make(chan struct{}, 1)
 
 	go func() {
-		// for _, query := range s.queries {
-		// 	err = errors.Join(err, query.Close())
-		// }
-
-		// err = errors.Join(err, s.db.Close())
+		// TODO
 
 		closed <- struct{}{}
 	}()
@@ -45,32 +38,21 @@ func (s *Storage) Close(ctx context.Context) (err error) {
 	}
 }
 
-func (s *Storage) connectToDatabase() (err error) {
-	// dbAddress := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", s.cfg.user, s.cfg.password, s.cfg.host, s.cfg.port, s.cfg.database)
+func (s *Storage) connectToDatabase() error {
+	s.db = redis.NewClient(&redis.Options{
+		Addr: net.JoinHostPort(s.cfg.host, s.cfg.port),
+	})
 
-	// s.db, err = sql.Open("pgx", dbAddress)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 
-	// if err == nil {
-	// 	err = s.db.Ping()
-	// }
+	err := s.db.Ping(ctx).Err()
 
-	// if err == nil {
-	// 	log.Info().Msg(fmt.Sprintf("Successfully connected to DB at %s", dbAddress))
-	// }
+	if err != nil {
+		return fmt.Errorf("Failed to connect to database: %s", err)
+	}
 
-	return err
-}
+	log.Info().Msg(fmt.Sprintf("Successfully connected to database at %s", s.db.Options().Addr))
 
-func (s *Storage) prepareQueries() (err error) {
-	// s.queries = make(map[string]*sql.Stmt)
-
-	// err = errors.Join(err, s.prepare(queryNewUserCreate, queryNewUserCreateName))
-	// err = errors.Join(err, s.prepare(queryPasswordIsValid, queryPasswordIsValidName))
-
-	return err
-}
-
-func (s *Storage) prepare(query, name string) (err error) {
-	// s.queries[name], err = s.db.Prepare(query)
-	return err
+	return nil
 }

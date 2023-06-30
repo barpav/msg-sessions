@@ -43,11 +43,11 @@ func (s *Service) Stop(ctx context.Context) (err error) {
 	return s.server.Shutdown(ctx)
 }
 
-// Swagger UI: https://barpav.github.io/msg-api-spec/#/sessions
+// Specification: https://barpav.github.io/msg-api-spec/#/sessions
 func (s *Service) operations() *chi.Mux {
 	ops := chi.NewRouter()
 
-	ops.Use(s.handleInternalServerError)
+	ops.Use(s.traceInternalServerError)
 	ops.Use(s.authenticate)
 
 	ops.Post("/", s.startNewSession)

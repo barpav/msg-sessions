@@ -1,37 +1,32 @@
 package data
 
-import "os"
-
-const (
-	defaultHost     = "localhost"
-	defaultPort     = "5432"
-	defaultDatabase = "postgres"
-	defaultUser     = "postgres"
-	defaultPassword = "postgres"
+import (
+	"os"
+	"strconv"
 )
 
 const (
-	envVarHost     = "MSG_STORAGE_HOST"
-	envVarPort     = "MSG_STORAGE_PORT"
-	envVarDatabase = "MSG_STORAGE_DATABASE"
-	envVarUser     = "MSG_STORAGE_USER"
-	envVarPassword = "MSG_STORAGE_PASSWORD"
+	defaultHost               = "localhost"
+	defaultPort               = "6379"
+	defaultMaxSessionsPerUser = 20
+)
+
+const (
+	envVarHost               = "MSG_STORAGE_HOST"
+	envVarPort               = "MSG_STORAGE_PORT"
+	envVarMaxSessionsPerUser = "MSG_MAX_SESSIONS_PER_USER"
 )
 
 type Config struct {
-	host     string
-	port     string
-	database string
-	user     string
-	password string
+	host               string
+	port               string
+	maxSessionsPerUser int
 }
 
 func (c *Config) Read() {
 	readSetting(envVarHost, defaultHost, &c.host)
 	readSetting(envVarPort, defaultPort, &c.port)
-	readSetting(envVarDatabase, defaultDatabase, &c.database)
-	readSetting(envVarUser, defaultUser, &c.user)
-	readSetting(envVarPassword, defaultPassword, &c.password)
+	readNumericSetting(envVarMaxSessionsPerUser, defaultMaxSessionsPerUser, &c.maxSessionsPerUser)
 }
 
 func readSetting(setting, defaultValue string, result *string) {
@@ -39,4 +34,19 @@ func readSetting(setting, defaultValue string, result *string) {
 	if *result == "" {
 		*result = defaultValue
 	}
+}
+
+func readNumericSetting(setting string, defaultValue int, result *int) {
+	val := os.Getenv(setting)
+
+	if val != "" {
+		valNum, err := strconv.Atoi(val)
+
+		if err == nil {
+			*result = valNum
+			return
+		}
+	}
+
+	*result = defaultValue
 }
