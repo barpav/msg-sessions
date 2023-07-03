@@ -7,19 +7,32 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/rs/zerolog/log"
 
-	"github.com/barpav/msg-sessions/internal/data"
-	"github.com/barpav/msg-sessions/internal/users"
+	"github.com/barpav/msg-sessions/internal/rest/models"
 )
 
 type Service struct {
 	Shutdown chan struct{}
 	server   *http.Server
-	storage  *data.Storage
-	users    *users.Client
+	auth     Authenticator
+	storage  Storage
 }
 
-func (s *Service) Start(storage *data.Storage, users *users.Client) {
-	s.storage, s.users = storage, users
+type Authenticator interface {
+	ValidateCredentials(ctx context.Context, userId, password string) (valid bool, err error)
+}
+
+type Storage interface {
+	StartNewSession(ctx context.Context, userId, ip, agent string) (id int64, key string, err error)
+	GetSessionsV1(ctx context.Context, userId string) (sessions *models.UserSessionsV1, err error)
+	EndSession(ctx context.Context, userId string, sessionId int64) (err error)
+	EndAllSessions(ctx context.Context, userId string) (err error)
+
+	SessionKeyInfo(ctx context.Context, key string) (userId string, sessionId int64, err error)
+	UpdateSessionInfo(ctx context.Context, userId string, sessionId int64, info map[string]interface{}) (err error)
+}
+
+func (s *Service) Start(auth Authenticator, sessions Storage) {
+	s.auth, s.storage = auth, sessions
 
 	s.server = &http.Server{
 		Addr:    ":8080",

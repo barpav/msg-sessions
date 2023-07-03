@@ -49,7 +49,7 @@ func (s *Service) authenticate(next http.Handler) http.Handler {
 		userId, password, parsed := r.BasicAuth()
 
 		if parsed {
-			authenticated, err = s.users.ValidateCredentials(r.Context(), userId, password)
+			authenticated, err = s.auth.ValidateCredentials(r.Context(), userId, password)
 		}
 
 		if err != nil {

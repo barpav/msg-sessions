@@ -64,7 +64,7 @@ func (m *microservice) launch() (err error) {
 	// m.api.private.Start(m.storage)
 
 	m.api.public = &rest.Service{}
-	m.api.public.Start(m.storage, m.clients.users)
+	m.api.public.Start(m.clients.users, m.storage)
 
 	return err
 }
