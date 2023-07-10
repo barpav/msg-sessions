@@ -75,7 +75,7 @@ func (s *Storage) StartNewSession(ctx context.Context, userId, ip, agent string)
 
 	pipe.SAdd(ctx, sessionsIdsKey(userId), id)
 
-	now := time.Now()
+	now := time.Now().UTC()
 	s.db.HSet(ctx, sessionInfoKey(userId, id),
 		"keySum", keySum,
 		"created", now,
