@@ -15,4 +15,4 @@ exec-redis:
 	sudo docker exec -it msg-storage-sessions-v1 redis-cli
 
 push:
-	sudo docker push ghcr.io/barpav/msg-sessions
+	sudo docker push ghcr.io/barpav/msg-sessions:v1
