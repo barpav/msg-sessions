@@ -86,7 +86,7 @@ func (m *microservice) serveAndShutdownGracefully() (err error) {
 	defer cancel()
 
 	err = errors.Join(err, m.api.public.Stop(ctx))
-	// err = errors.Join(err, m.api.private.Stop(ctx))
+	// err = errors.Join(err, m.api.private.Stop(ctx)) // TODO
 	err = errors.Join(err, m.clients.users.Disconnect(ctx))
 	err = errors.Join(err, m.storage.Close(ctx))
 

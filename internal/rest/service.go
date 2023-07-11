@@ -63,6 +63,7 @@ func (s *Service) operations() *chi.Mux {
 	ops.Use(s.traceInternalServerError)
 	ops.Use(s.authenticate)
 
+	// Public endpoint is the concern of the api gateway
 	ops.Post("/", s.startNewSession)
 	ops.Get("/", s.getActiveSessions)
 	ops.Delete("/", s.endSessions)
