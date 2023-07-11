@@ -1,0 +1,53 @@
+services:
+
+  users-v1:
+    image: ghcr.io/barpav/msg-users:v1
+    container_name: msg-users-v1
+    environment:
+      - MSG_STORAGE_HOST=storage-users-v1
+    ports:
+      - 8081:8080
+    expose:
+      - 9000
+    depends_on:
+      storage-users-v1:
+        condition: service_healthy
+
+  storage-users-v1:
+    image: ghcr.io/barpav/msg-storage-users:v1
+    container_name: msg-storage-users-v1
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    expose:
+      - 5432
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 1s
+      timeout: 2s
+      retries: 5
+  
+  sessions-v1:
+    build:
+      context: .
+      dockerfile: docker/service/Dockerfile
+    image: ghcr.io/barpav/msg-sessions:v1
+    container_name: msg-sessions-v1
+    environment:
+      - MSG_STORAGE_HOST=storage-sessions-v1
+      - MSG_USERS_HOST=users-v1
+    ports:
+      - 8080:8080
+    depends_on:
+      storage-sessions-v1:
+        condition: service_healthy
+  
+  storage-sessions-v1:
+    image: redis:alpine3.18
+    container_name: msg-storage-sessions-v1
+    expose:
+      - 6379
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli", "ping"]
+      interval: 1s
+      timeout: 2s
+      retries: 5
