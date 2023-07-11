@@ -32,6 +32,5 @@ func (c *Client) Connect() (err error) {
 }
 
 func (c *Client) Disconnect(ctx context.Context) (err error) {
-	// TODO
-	return err
+	return c.conn.Close()
 }

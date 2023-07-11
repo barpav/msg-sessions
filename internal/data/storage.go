@@ -25,7 +25,7 @@ func (s *Storage) Close(ctx context.Context) (err error) {
 	closed := make(chan struct{}, 1)
 
 	go func() {
-		// TODO
+		err = s.db.Close()
 
 		closed <- struct{}{}
 	}()
