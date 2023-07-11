@@ -24,6 +24,7 @@ func (s *Service) getActiveSessionsV1(w http.ResponseWriter, r *http.Request) {
 	sessions, err := s.storage.GetSessionsV1(r.Context(), authenticatedUser(r))
 
 	if err == nil {
+		w.Header().Set("Content-Type", mimeTypeUserSessionsV1)
 		err = json.NewEncoder(w).Encode(sessions)
 	}
 
@@ -35,6 +36,5 @@ func (s *Service) getActiveSessionsV1(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Add("Content-Type", mimeTypeUserSessionsV1)
 	w.WriteHeader(http.StatusOK)
 }
