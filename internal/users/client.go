@@ -3,6 +3,7 @@ package users
 import (
 	"context"
 	"fmt"
+	"net"
 	"time"
 
 	usgrpc "github.com/barpav/msg-users/users_service_go_grpc"
@@ -11,15 +12,19 @@ import (
 )
 
 type Client struct {
+	cfg  *Config
 	conn *grpc.ClientConn
 	stub usgrpc.UsersClient
 }
 
 func (c *Client) Connect() (err error) {
+	c.cfg = &Config{}
+	c.cfg.Read()
+
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	c.conn, err = grpc.DialContext(ctx, "localhost:9000",
+	c.conn, err = grpc.DialContext(ctx, net.JoinHostPort(c.cfg.host, c.cfg.port),
 		grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
 
 	if err != nil {
@@ -32,5 +37,8 @@ func (c *Client) Connect() (err error) {
 }
 
 func (c *Client) Disconnect(ctx context.Context) (err error) {
+	if c.conn == nil {
+		return nil
+	}
 	return c.conn.Close()
 }
