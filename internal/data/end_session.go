@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/redis/go-redis/v9"
 	"github.com/rs/zerolog/log"
 )
 
@@ -32,7 +33,7 @@ func (s *Storage) EndSession(ctx context.Context, userId string, sessionId int64
 	var keySum string
 	keySum, err = s.db.HGet(ctx, sessionInfoKey(userId, sessionId), "keySum").Result()
 
-	if err != nil {
+	if err != nil && !errors.Is(err, redis.Nil) { // operation is idempotent
 		return err
 	}
 

@@ -2,7 +2,10 @@ package data
 
 import (
 	"context"
+	"errors"
 	"fmt"
+
+	"github.com/redis/go-redis/v9"
 )
 
 type ErrSessionNotFound struct{}
@@ -32,13 +35,13 @@ func (s *Storage) SessionKeyInfo(ctx context.Context, key string) (userId string
 
 	userId, err = userIdCmd.Result()
 
-	if err != nil {
+	if err != nil && !errors.Is(err, redis.Nil) {
 		return "", 0, err
 	}
 
 	sessionId, err = sessionIdCmd.Int64()
 
-	if err != nil {
+	if err != nil && !errors.Is(err, redis.Nil) {
 		return "", 0, err
 	}
 
