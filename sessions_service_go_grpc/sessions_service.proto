@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package msg.sessions;
+
+option go_package = "github.com/barpav/msg-sessions/sessions_service_go_grpc";
+
+service Sessions {
+    rpc Validate(SessionData) returns (ValidationResult);
+}
+
+message SessionData {
+    string key = 1;
+    string ip = 2;
+    string agent = 3;
+}
+
+message ValidationResult {
+    string user = 1;
+}

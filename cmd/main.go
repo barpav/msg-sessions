@@ -12,6 +12,7 @@ import (
 	"go.elastic.co/ecszerolog"
 
 	"github.com/barpav/msg-sessions/internal/data"
+	"github.com/barpav/msg-sessions/internal/pb"
 	"github.com/barpav/msg-sessions/internal/rest"
 	"github.com/barpav/msg-sessions/internal/users"
 )
@@ -40,8 +41,8 @@ func main() {
 
 type microservice struct {
 	api struct {
-		public *rest.Service // Specification: https://barpav.github.io/msg-api-spec/#/sessions
-		// private *pb.Service   // TODO
+		public  *rest.Service // specification: https://barpav.github.io/msg-api-spec/#/sessions
+		private *pb.Service   // see sessions_service_go_grpc/sessions_service.proto
 	}
 	clients struct {
 		users *users.Client // github.com/barpav/msg-users
@@ -60,8 +61,8 @@ func (m *microservice) launch() (err error) {
 	m.clients.users = &users.Client{}
 	err = errors.Join(err, m.clients.users.Connect())
 
-	// m.api.private = &pb.Service{}
-	// m.api.private.Start(m.storage)
+	m.api.private = &pb.Service{}
+	m.api.private.Start(m.storage)
 
 	m.api.public = &rest.Service{}
 	m.api.public.Start(m.clients.users, m.storage)
@@ -77,7 +78,7 @@ func (m *microservice) serveAndShutdownGracefully() (err error) {
 	select {
 	case <-m.shutdown:
 	case <-m.api.public.Shutdown:
-		// case <-m.api.private.Shutdown:
+	case <-m.api.private.Shutdown:
 	}
 
 	log.Info().Msg("Shutting down...")
@@ -86,7 +87,7 @@ func (m *microservice) serveAndShutdownGracefully() (err error) {
 	defer cancel()
 
 	err = errors.Join(err, m.api.public.Stop(ctx))
-	// err = errors.Join(err, m.api.private.Stop(ctx)) // TODO
+	err = errors.Join(err, m.api.private.Stop(ctx))
 	err = errors.Join(err, m.clients.users.Disconnect(ctx))
 	err = errors.Join(err, m.storage.Close(ctx))
 

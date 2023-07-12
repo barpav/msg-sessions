@@ -26,9 +26,6 @@ type Storage interface {
 	GetSessionsV1(ctx context.Context, userId string) (sessions *models.UserSessionsV1, err error)
 	EndSession(ctx context.Context, userId string, sessionId int64) (err error)
 	EndAllSessions(ctx context.Context, userId string) (err error)
-
-	SessionKeyInfo(ctx context.Context, key string) (userId string, sessionId int64, err error)
-	UpdateSessionInfo(ctx context.Context, userId string, sessionId int64, info map[string]interface{}) (err error)
 }
 
 func (s *Service) Start(auth Authenticator, sessions Storage) {

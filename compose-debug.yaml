@@ -7,7 +7,7 @@ services:
       - MSG_STORAGE_HOST=storage-users-v1
     ports:
       - 8081:8080
-      - 9000:9000
+      - 9001:9000
     depends_on:
       storage-users-v1:
         condition: service_healthy
