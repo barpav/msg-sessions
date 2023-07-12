@@ -3,6 +3,10 @@ up:
 down:
 	sudo docker-compose down
 
+build:
+	sudo docker image rm -f ghcr.io/barpav/msg-sessions:v1
+	sudo docker build -t ghcr.io/barpav/msg-sessions:v1 -f docker/service/Dockerfile .
+	sudo docker image ls
 clear:
 	sudo docker image rm -f ghcr.io/barpav/msg-sessions:v1
 
@@ -16,3 +20,8 @@ exec-redis:
 
 push:
 	sudo docker push ghcr.io/barpav/msg-sessions:v1
+
+proto:
+	protoc --go_out=. --go_opt=paths=source_relative \
+    --go-grpc_out=. --go-grpc_opt=paths=source_relative \
+    sessions_service_go_grpc/sessions_service.proto

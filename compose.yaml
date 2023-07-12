@@ -37,6 +37,7 @@ services:
       - MSG_USERS_HOST=users-v1
     ports:
       - 8080:8080
+      - 9000:9000
     depends_on:
       storage-sessions-v1:
         condition: service_healthy
