@@ -1,5 +1,5 @@
-github.com/barpav/msg-users v0.0.0-20230617133927-6508e2099155 h1:4LmFqxEn0lM1HDNBylsWyrQbDMxj8XPj5q/69GmZrNw=
-github.com/barpav/msg-users v0.0.0-20230617133927-6508e2099155/go.mod h1:jXEuWXFJjjOFkS64TYkdL12xLVbqAmIPhYV3LGQbTfM=
+github.com/barpav/msg-users v0.0.0-20230718132644-f3dcf7051da2 h1:Dwll8mg/LKTKyscH5zKcTzJ5ZBBdUsw9zKLxthCtBJ0=
+github.com/barpav/msg-users v0.0.0-20230718132644-f3dcf7051da2/go.mod h1:jXEuWXFJjjOFkS64TYkdL12xLVbqAmIPhYV3LGQbTfM=
 github.com/bsm/ginkgo/v2 v2.7.0 h1:ItPMPH90RbmZJt5GtkcNvIRuGEdwlBItdNVoyzaNQao=
 github.com/bsm/gomega v1.26.0 h1:LhQm+AFcgV2M0WyKroMASzAzCAJVpAxQXv4SaI9a69Y=
 github.com/cespare/xxhash/v2 v2.2.0 h1:DC2CZ1Ep5Y4k3ZQ899DldepgrayRUGE6BBZ/cd9Cj44=
