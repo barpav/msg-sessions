@@ -3,7 +3,7 @@ module github.com/barpav/msg-sessions
 go 1.20
 
 require (
-	github.com/barpav/msg-users v0.0.0-20230617133927-6508e2099155
+	github.com/barpav/msg-users v0.0.0-20230718132644-f3dcf7051da2
 	github.com/go-chi/chi/v5 v5.0.8
 	github.com/google/uuid v1.3.0
 	github.com/redis/go-redis/v9 v9.0.5
