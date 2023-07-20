@@ -58,11 +58,11 @@ func (m *microservice) launch() (err error) {
 	m.storage = &data.Storage{}
 	err = errors.Join(err, m.storage.Open())
 
-	m.clients.users = &users.Client{}
-	err = errors.Join(err, m.clients.users.Connect())
-
 	m.api.private = &pb.Service{}
 	m.api.private.Start(m.storage)
+
+	m.clients.users = &users.Client{}
+	err = errors.Join(err, m.clients.users.Connect())
 
 	m.api.public = &rest.Service{}
 	m.api.public.Start(m.clients.users, m.storage)
@@ -87,8 +87,8 @@ func (m *microservice) serveAndShutdownGracefully() (err error) {
 	defer cancel()
 
 	err = errors.Join(err, m.api.public.Stop(ctx))
-	err = errors.Join(err, m.api.private.Stop(ctx))
 	err = errors.Join(err, m.clients.users.Disconnect(ctx))
+	err = errors.Join(err, m.api.private.Stop(ctx))
 	err = errors.Join(err, m.storage.Close(ctx))
 
 	return err
