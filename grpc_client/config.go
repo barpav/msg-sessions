@@ -2,26 +2,31 @@ package sessions
 
 import (
 	"os"
+	"strconv"
 )
 
 const (
-	defaultHost = "localhost"
-	defaultPort = "9000"
+	defaultHost        = "localhost"
+	defaultPort        = "9000"
+	defaultConnTimeout = 30
 )
 
 const (
-	envVarHost = "MSG_SESSIONS_HOST"
-	envVarPort = "MSG_SESSIONS_PORT"
+	envVarHost        = "MSG_SESSIONS_HOST"
+	envVarPort        = "MSG_SESSIONS_PORT"
+	envVarConnTimeout = "MSG_SESSIONS_CONN_TIMEOUT"
 )
 
 type Config struct {
-	host string
-	port string
+	host        string
+	port        string
+	connTimeout int
 }
 
 func (c *Config) Read() {
 	readSetting(envVarHost, defaultHost, &c.host)
 	readSetting(envVarPort, defaultPort, &c.port)
+	readNumericSetting(envVarConnTimeout, defaultConnTimeout, &c.connTimeout)
 }
 
 func readSetting(setting, defaultValue string, result *string) {
@@ -29,4 +34,19 @@ func readSetting(setting, defaultValue string, result *string) {
 	if *result == "" {
 		*result = defaultValue
 	}
+}
+
+func readNumericSetting(setting string, defaultValue int, result *int) {
+	val := os.Getenv(setting)
+
+	if val != "" {
+		valNum, err := strconv.Atoi(val)
+
+		if err == nil {
+			*result = valNum
+			return
+		}
+	}
+
+	*result = defaultValue
 }
