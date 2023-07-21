@@ -25,7 +25,7 @@ func (c *Client) Connect() (err error) {
 	optionCredentials := grpc.WithTransportCredentials(insecure.NewCredentials())
 	optionBlock := grpc.WithBlock()
 
-	for try := 0; try < c.cfg.connRetries; try++ {
+	for try := 0; try < c.cfg.connTries; try++ {
 		ctx, cancel := context.WithTimeout(context.Background(), time.Duration(c.cfg.connTimeout)*time.Second)
 		c.conn, err = grpc.DialContext(ctx, target, optionCredentials, optionBlock)
 		cancel()
