@@ -21,11 +21,19 @@ func (c *Client) Connect() (err error) {
 	c.cfg = &Config{}
 	c.cfg.Read()
 
-	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(c.cfg.connTimeout)*time.Second)
-	defer cancel()
+	target := net.JoinHostPort(c.cfg.host, c.cfg.port)
+	optionCredentials := grpc.WithTransportCredentials(insecure.NewCredentials())
+	optionBlock := grpc.WithBlock()
 
-	c.conn, err = grpc.DialContext(ctx, net.JoinHostPort(c.cfg.host, c.cfg.port),
-		grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
+	for try := 0; try < c.cfg.connRetries; try++ {
+		ctx, cancel := context.WithTimeout(context.Background(), time.Duration(c.cfg.connTimeout)*time.Second)
+		c.conn, err = grpc.DialContext(ctx, target, optionCredentials, optionBlock)
+		cancel()
+
+		if err == nil {
+			break
+		}
+	}
 
 	if err != nil {
 		return fmt.Errorf("Can't connect to 'sessions' service: %w", err)
