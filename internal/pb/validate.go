@@ -34,7 +34,7 @@ func (s *Service) Validate(ctx context.Context, sessionData *ssgrpc.SessionData)
 				"lastAgent":    sessionData.Agent,
 			}
 
-			err := s.storage.UpdateSessionInfo(ctx, userId, sessionId, info)
+			err := s.storage.UpdateSessionInfo(context.Background(), userId, sessionId, info)
 
 			if err != nil {
 				log.Err(err).Msg(fmt.Sprintf("Failed to update user '%s' session '%d' info.", userId, sessionId))
