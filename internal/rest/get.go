@@ -10,6 +10,7 @@ import (
 
 const mimeTypeUserSessionsV1 = "application/vnd.userSessions.v1+json"
 
+// https://barpav.github.io/msg-api-spec/#/sessions/get_sessions
 func (s *Service) getActiveSessions(w http.ResponseWriter, r *http.Request) {
 	switch r.Header.Get("Accept") {
 	case "", mimeTypeUserSessionsV1: // including if not specified

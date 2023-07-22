@@ -12,6 +12,7 @@ type ErrTooManySessions interface {
 	ImplementsTooManySessionsError()
 }
 
+// https://barpav.github.io/msg-api-spec/#/sessions/post_sessions
 func (s *Service) startNewSession(w http.ResponseWriter, r *http.Request) {
 	id, key, err := s.storage.StartNewSession(r.Context(), authenticatedUser(r), userIP(r), userAgent(r))
 

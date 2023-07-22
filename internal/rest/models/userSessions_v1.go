@@ -1,5 +1,6 @@
 package models
 
+// Schema: userSessions.v1
 type UserSessionsV1 struct {
 	Active int              `json:"active"`
 	List   []*UserSessionV1 `json:"list"`
