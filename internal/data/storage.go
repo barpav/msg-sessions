@@ -49,7 +49,7 @@ func (s *Storage) connectToDatabase() error {
 	err := s.db.Ping(ctx).Err()
 
 	if err != nil {
-		return fmt.Errorf("Failed to connect to database: %s", err)
+		return fmt.Errorf("Failed to connect to database: %w", err)
 	}
 
 	log.Info().Msg(fmt.Sprintf("Successfully connected to database at %s", s.db.Options().Addr))

@@ -8,6 +8,7 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+// https://barpav.github.io/msg-api-spec/#/sessions/delete_sessions
 func (s *Service) endSessions(w http.ResponseWriter, r *http.Request) {
 	var err error
 	if id := r.URL.Query().Get("id"); id != "" {
