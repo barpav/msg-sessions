@@ -23,6 +23,7 @@ type Authenticator interface {
 	ValidateCredentials(ctx context.Context, userId, password string) (valid bool, err error)
 }
 
+//go:generate mockery --name Storage
 type Storage interface {
 	StartNewSession(ctx context.Context, userId, ip, agent string) (id int64, key string, err error)
 	GetSessionsV1(ctx context.Context, userId string) (sessions *models.UserSessionsV1, err error)
