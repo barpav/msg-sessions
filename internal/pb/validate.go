@@ -20,7 +20,7 @@ func (s *Service) Validate(ctx context.Context, sessionData *ssgrpc.SessionData)
 	if err != nil {
 		if _, ok := err.(ErrSessionNotFound); !ok {
 			log.Err(err).Msg("Session data validation failed.")
-			return nil, fmt.Errorf("Session data validation failed: %w", err)
+			return nil, fmt.Errorf("session data validation failed: %w", err)
 		}
 	}
 

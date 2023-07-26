@@ -106,7 +106,7 @@ func TestService_getActiveSessions(t *testing.T) {
 					s := mocks.NewStorage(t)
 					s.On("GetSessionsV1", mock.Anything, mock.Anything).Return(
 						nil,
-						errors.New("Test error"),
+						errors.New("test error"),
 					)
 					return s
 				}(),

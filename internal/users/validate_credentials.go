@@ -11,7 +11,7 @@ func (c *Client) ValidateCredentials(ctx context.Context, userId, password strin
 	result, err := c.stub.Validate(ctx, &usgrpc.Credentials{Id: userId, Password: password})
 
 	if err != nil {
-		return false, fmt.Errorf("Failed to validate credentials (service 'users' client): %w", err)
+		return false, fmt.Errorf("failed to validate credentials (service 'users' client): %w", err)
 	}
 
 	return result.Valid, nil
