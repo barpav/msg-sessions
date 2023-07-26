@@ -3,8 +3,6 @@ package rest
 import (
 	"fmt"
 	"net/http"
-
-	"github.com/rs/zerolog/log"
 )
 
 type ErrTooManySessions interface {
@@ -22,10 +20,7 @@ func (s *Service) startNewSession(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		log.Err(err).Msg(fmt.Sprintf("Failed to start new session (issue: %s).", requestId(r)))
-
-		addIssueHeader(w, r)
-		w.WriteHeader(http.StatusInternalServerError)
+		logAndReturnErrorWithIssue(w, r, err, "Failed to start new session")
 		return
 	}
 

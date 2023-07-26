@@ -2,10 +2,7 @@ package rest
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
-
-	"github.com/rs/zerolog/log"
 )
 
 const mimeTypeUserSessionsV1 = "application/vnd.userSessions.v1+json"
@@ -30,10 +27,7 @@ func (s *Service) getActiveSessionsV1(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err != nil {
-		log.Err(err).Msg(fmt.Sprintf("Failed to get active sessions (v1, issue: %s).", requestId(r)))
-
-		addIssueHeader(w, r)
-		w.WriteHeader(http.StatusInternalServerError)
+		logAndReturnErrorWithIssue(w, r, err, "Failed to get active sessions (v1)")
 		return
 	}
 
