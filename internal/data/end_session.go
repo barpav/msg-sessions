@@ -13,7 +13,7 @@ import (
 func (s *Storage) EndSession(ctx context.Context, userId string, sessionId int64) (err error) {
 	defer func() {
 		if err != nil {
-			err = fmt.Errorf("Failed to end session: %w", err)
+			err = fmt.Errorf("failed to end session: %w", err)
 		}
 	}()
 

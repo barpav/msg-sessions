@@ -12,7 +12,7 @@ func (c *Client) ValidateSession(ctx context.Context, key, ip, agent string) (us
 	result, err = c.stub.Validate(ctx, &ssgrpc.SessionData{Key: key, Ip: ip, Agent: agent})
 
 	if err != nil {
-		return "", fmt.Errorf("Failed to validate session (service 'sessions' client): %w", err)
+		return "", fmt.Errorf("failed to validate session (service 'sessions' client): %w", err)
 	}
 
 	return result.User, nil

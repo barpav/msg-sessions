@@ -13,7 +13,7 @@ import (
 func (s *Storage) GetSessionsV1(ctx context.Context, userId string) (sessions *models.UserSessionsV1, err error) {
 	defer func() {
 		if err != nil {
-			err = fmt.Errorf("Failed to get sessions (v1): %w", err)
+			err = fmt.Errorf("failed to get sessions (v1): %w", err)
 		}
 	}()
 

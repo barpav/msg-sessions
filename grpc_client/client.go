@@ -36,7 +36,7 @@ func (c *Client) Connect() (err error) {
 	}
 
 	if err != nil {
-		return fmt.Errorf("Can't connect to 'sessions' service: %w", err)
+		return fmt.Errorf("can't connect to 'sessions' service: %w", err)
 	}
 
 	c.stub = ssgrpc.NewSessionsClient(c.conn)

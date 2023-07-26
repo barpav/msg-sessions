@@ -1,11 +1,8 @@
 package rest
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
-
-	"github.com/rs/zerolog/log"
 )
 
 // https://barpav.github.io/msg-api-spec/#/sessions/delete_sessions
@@ -19,10 +16,7 @@ func (s *Service) endSessions(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err != nil {
-		log.Err(err).Msg(fmt.Sprintf("Failed to end sessions (issue: %s).", requestId(r)))
-
-		addIssueHeader(w, r)
-		w.WriteHeader(http.StatusInternalServerError)
+		logAndReturnErrorWithIssue(w, r, err, "Failed to end sessions")
 		return
 	}
 

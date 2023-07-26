@@ -16,7 +16,7 @@ func (s *Storage) SessionKeyInfo(ctx context.Context, key string) (userId string
 			if _, ok := err.(*ErrSessionNotFound); ok {
 				return
 			}
-			err = fmt.Errorf("Failed to get session key info: %w", err)
+			err = fmt.Errorf("failed to get session key info: %w", err)
 		}
 	}()
 

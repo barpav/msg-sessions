@@ -28,9 +28,9 @@ func (s *Storage) lock(ctx context.Context, resource string, timeout time.Durati
 
 	switch {
 	case err != nil:
-		return nil, fmt.Errorf("Failed to lock resource '%s': %w", l.resource, err)
+		return nil, fmt.Errorf("failed to lock resource '%s': %w", l.resource, err)
 	case !set:
-		return nil, fmt.Errorf("Failed to lock resource '%s': already locked.", l.resource)
+		return nil, fmt.Errorf("failed to lock resource '%s': already locked.", l.resource)
 	default:
 		return l, nil
 	}
@@ -41,9 +41,9 @@ func (l *lock) unlock() error {
 
 	switch {
 	case err != nil:
-		return fmt.Errorf("Failed to unlock resource '%s': %w", l.resource, err)
+		return fmt.Errorf("failed to unlock resource '%s': %w", l.resource, err)
 	case result == 0:
-		return fmt.Errorf("Failed to unlock resource '%s': lock not found.", l.resource)
+		return fmt.Errorf("failed to unlock resource '%s': lock not found.", l.resource)
 	default:
 		return nil
 	}

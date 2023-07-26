@@ -9,7 +9,7 @@ import (
 func (s *Storage) EndAllSessions(ctx context.Context, userId string) (err error) {
 	defer func() {
 		if err != nil {
-			err = fmt.Errorf("Failed to end all sessions: %w", err)
+			err = fmt.Errorf("failed to end all sessions: %w", err)
 		}
 	}()
 

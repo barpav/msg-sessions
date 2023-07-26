@@ -28,7 +28,7 @@ func (c *Client) Connect() (err error) {
 		grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
 
 	if err != nil {
-		return fmt.Errorf("Can't connect to 'users' service: %w", err)
+		return fmt.Errorf("can't connect to 'users' service: %w", err)
 	}
 
 	c.stub = usgrpc.NewUsersClient(c.conn)

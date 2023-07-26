@@ -19,7 +19,7 @@ func (s *Storage) StartNewSession(ctx context.Context, userId, ip, agent string)
 			if _, ok := err.(*ErrTooManySessions); ok {
 				return
 			}
-			err = fmt.Errorf("Failed to start new session: %w", err)
+			err = fmt.Errorf("failed to start new session: %w", err)
 		}
 	}()
 
