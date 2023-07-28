@@ -1,11 +1,14 @@
 syntax = "proto3";
 
+import "google/protobuf/empty.proto";
+
 package msg.sessions;
 
 option go_package = "github.com/barpav/msg-sessions/sessions_service_go_grpc";
 
 service Sessions {
     rpc Validate(SessionData) returns (ValidationResult);
+    rpc EndAll(User) returns (google.protobuf.Empty);
 }
 
 message SessionData {
@@ -16,4 +19,8 @@ message SessionData {
 
 message ValidationResult {
     string user = 1;
+}
+
+message User {
+    string id = 1;
 }
