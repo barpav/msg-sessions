@@ -24,6 +24,7 @@ type Service struct {
 type Storage interface {
 	SessionKeyInfo(ctx context.Context, key string) (userId string, sessionId int64, err error)
 	UpdateSessionInfo(ctx context.Context, userId string, sessionId int64, info map[string]interface{}) (err error)
+	EndAllSessions(ctx context.Context, userId string) (err error)
 }
 
 func (s *Service) Start(storage *data.Storage) {

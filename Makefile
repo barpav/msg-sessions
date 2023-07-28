@@ -15,6 +15,22 @@ up-debug:
 down-debug:
 	sudo docker-compose -f compose-debug.yaml down
 
+user:
+	curl -v -X POST	-H "Content-Type: application/vnd.newUser.v1+json" \
+	-d '{"id": "jane", "name": "Jane Doe", "password": "My1stGoodPassword"}' \
+	localhost:8081
+session:
+	curl -v -X POST -H "Authorization: Basic amFuZTpNeTFzdEdvb2RQYXNzd29yZA==" localhost:8080
+get-sessions:
+	curl -v -H "Authorization: Basic amFuZTpNeTFzdEdvb2RQYXNzd29yZA==" \
+	-H "Accept: application/vnd.userSessions.v1+json" \
+	localhost:8080
+end-sessions-grpc:
+	grpcurl -import-path sessions_service_go_grpc \
+	-proto sessions_service.proto \
+	-d '{"id": "jane"}' \
+	-plaintext localhost:9000 msg.sessions.Sessions/EndAll
+
 exec-redis:
 	sudo docker exec -it msg-storage-sessions-v1 redis-cli
 
