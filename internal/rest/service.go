@@ -56,7 +56,13 @@ func (s *Service) Start(auth Authenticator, sessions Storage) {
 }
 
 func (s *Service) Stop(ctx context.Context) (err error) {
-	return s.server.Shutdown(ctx)
+	err = s.server.Shutdown(ctx)
+
+	if err != nil {
+		err = fmt.Errorf("failed to stop HTTP service: %w", err)
+	}
+
+	return err
 }
 
 // Specification: https://barpav.github.io/msg-api-spec/#/sessions

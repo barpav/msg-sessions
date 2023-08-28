@@ -40,5 +40,25 @@ func (c *Client) Disconnect(ctx context.Context) (err error) {
 	if c.conn == nil {
 		return nil
 	}
-	return c.conn.Close()
+
+	var dErr error
+	closed := make(chan struct{}, 1)
+
+	go func() {
+		dErr = c.conn.Close()
+		closed <- struct{}{}
+	}()
+
+	select {
+	case <-closed:
+		err = dErr
+	case <-ctx.Done():
+		err = ctx.Err()
+	}
+
+	if err != nil {
+		err = fmt.Errorf("failed to disconnect from 'users' service: %w", err)
+	}
+
+	return err
 }

@@ -64,6 +64,6 @@ func (s *Service) Stop(ctx context.Context) (err error) {
 	case <-closed:
 		return nil
 	case <-ctx.Done():
-		return ctx.Err()
+		return fmt.Errorf("failed to stop gRPC service: %w", ctx.Err())
 	}
 }

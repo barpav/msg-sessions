@@ -22,20 +22,26 @@ func (s *Storage) Open() error {
 }
 
 func (s *Storage) Close(ctx context.Context) (err error) {
+	var closeErr error
 	closed := make(chan struct{}, 1)
 
 	go func() {
-		err = s.db.Close()
-
+		closeErr = s.db.Close()
 		closed <- struct{}{}
 	}()
 
 	select {
 	case <-closed:
-		return err
+		err = closeErr
 	case <-ctx.Done():
-		return ctx.Err()
+		err = ctx.Err()
 	}
+
+	if err != nil {
+		err = fmt.Errorf("failed to disconnect from database: %w", err)
+	}
+
+	return err
 }
 
 func (s *Storage) connectToDatabase() error {
