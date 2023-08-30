@@ -51,7 +51,6 @@ func TestService_getActiveSessions(t *testing.T) {
 					s.On("GetSessionsV1", mock.Anything, mock.Anything).Return(
 						&models.UserSessionsV1{
 							Active: 0,
-							List:   make([]*models.UserSessionV1, 0),
 						},
 						nil,
 					)
@@ -69,7 +68,6 @@ func TestService_getActiveSessions(t *testing.T) {
 			wantHeaders: map[string]string{},
 			wantBody: &models.UserSessionsV1{
 				Active: 0,
-				List:   make([]*models.UserSessionV1, 0),
 			},
 			wantStatus: http.StatusOK,
 		},
@@ -81,7 +79,6 @@ func TestService_getActiveSessions(t *testing.T) {
 					s.On("GetSessionsV1", mock.Anything, mock.Anything).Return(
 						&models.UserSessionsV1{
 							Active: 0,
-							List:   make([]*models.UserSessionV1, 0),
 						},
 						nil,
 					)
@@ -95,7 +92,6 @@ func TestService_getActiveSessions(t *testing.T) {
 			wantHeaders: map[string]string{},
 			wantBody: &models.UserSessionsV1{
 				Active: 0,
-				List:   make([]*models.UserSessionV1, 0),
 			},
 			wantStatus: http.StatusOK,
 		},
