@@ -19,14 +19,14 @@ const (
 	envVarConnTries   = "MSG_SESSIONS_CONN_TRIES"
 )
 
-type Config struct {
+type config struct {
 	host        string
 	port        string
 	connTimeout int
 	connTries   int
 }
 
-func (c *Config) Read() {
+func (c *config) Read() {
 	readSetting(envVarHost, defaultHost, &c.host)
 	readSetting(envVarPort, defaultPort, &c.port)
 	readNumericSetting(envVarConnTimeout, defaultConnTimeout, &c.connTimeout)

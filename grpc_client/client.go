@@ -12,13 +12,13 @@ import (
 )
 
 type Client struct {
-	cfg  *Config
+	cfg  *config
 	conn *grpc.ClientConn
 	stub ssgrpc.SessionsClient
 }
 
 func (c *Client) Connect() (err error) {
-	c.cfg = &Config{}
+	c.cfg = &config{}
 	c.cfg.Read()
 
 	target := net.JoinHostPort(c.cfg.host, c.cfg.port)

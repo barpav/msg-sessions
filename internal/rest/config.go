@@ -6,11 +6,11 @@ const defaultPort = "8080"
 
 const envVarPort = "MSG_HTTP_PORT"
 
-type Config struct {
+type config struct {
 	port string
 }
 
-func (c *Config) Read() {
+func (c *config) Read() {
 	readSetting(envVarPort, defaultPort, &c.port)
 }
 
