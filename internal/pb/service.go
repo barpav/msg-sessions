@@ -14,7 +14,7 @@ import (
 
 type Service struct {
 	Shutdown chan struct{}
-	cfg      *Config
+	cfg      *config
 	server   *grpc.Server
 	storage  Storage
 
@@ -28,7 +28,7 @@ type Storage interface {
 }
 
 func (s *Service) Start(storage *data.Storage) {
-	s.cfg = &Config{}
+	s.cfg = &config{}
 	s.cfg.Read()
 
 	s.server = grpc.NewServer()

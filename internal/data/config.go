@@ -17,13 +17,13 @@ const (
 	envVarMaxSessionsPerUser = "MSG_MAX_SESSIONS_PER_USER"
 )
 
-type Config struct {
+type config struct {
 	host               string
 	port               string
 	maxSessionsPerUser int
 }
 
-func (c *Config) Read() {
+func (c *config) Read() {
 	readSetting(envVarHost, defaultHost, &c.host)
 	readSetting(envVarPort, defaultPort, &c.port)
 	readNumericSetting(envVarMaxSessionsPerUser, defaultMaxSessionsPerUser, &c.maxSessionsPerUser)

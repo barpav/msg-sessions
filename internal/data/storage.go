@@ -11,12 +11,12 @@ import (
 )
 
 type Storage struct {
-	cfg *Config
+	cfg *config
 	db  *redis.Client
 }
 
 func (s *Storage) Open() error {
-	s.cfg = &Config{}
+	s.cfg = &config{}
 	s.cfg.Read()
 	return s.connectToDatabase()
 }

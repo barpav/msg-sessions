@@ -12,13 +12,13 @@ import (
 )
 
 type Client struct {
-	cfg  *Config
+	cfg  *config
 	conn *grpc.ClientConn
 	stub usgrpc.UsersClient
 }
 
 func (c *Client) Connect() (err error) {
-	c.cfg = &Config{}
+	c.cfg = &config{}
 	c.cfg.Read()
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(c.cfg.connTimeout)*time.Second)
