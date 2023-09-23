@@ -30,6 +30,4 @@ func (s *Service) getActiveSessionsV1(w http.ResponseWriter, r *http.Request) {
 		logAndReturnErrorWithIssue(w, r, err, "Failed to get active sessions (v1)")
 		return
 	}
-
-	w.WriteHeader(http.StatusOK)
 }
