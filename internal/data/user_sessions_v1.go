@@ -10,7 +10,7 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-func (s *Storage) GetSessionsV1(ctx context.Context, userId string) (sessions *models.UserSessionsV1, err error) {
+func (s *Storage) UserSessionsV1(ctx context.Context, userId string) (sessions *models.UserSessionsV1, err error) {
 	defer func() {
 		if err != nil {
 			err = fmt.Errorf("failed to get sessions (v1): %w", err)

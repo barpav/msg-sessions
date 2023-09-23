@@ -26,7 +26,7 @@ type Authenticator interface {
 //go:generate mockery --name Storage
 type Storage interface {
 	StartNewSession(ctx context.Context, userId, ip, agent string) (id int64, key string, err error)
-	GetSessionsV1(ctx context.Context, userId string) (sessions *models.UserSessionsV1, err error)
+	UserSessionsV1(ctx context.Context, userId string) (sessions *models.UserSessionsV1, err error)
 	EndSession(ctx context.Context, userId string, sessionId int64) (err error)
 	EndAllSessions(ctx context.Context, userId string) (err error)
 }
