@@ -42,32 +42,6 @@ func (_m *Storage) EndSession(ctx context.Context, userId string, sessionId int6
 	return r0
 }
 
-// GetSessionsV1 provides a mock function with given fields: ctx, userId
-func (_m *Storage) GetSessionsV1(ctx context.Context, userId string) (*models.UserSessionsV1, error) {
-	ret := _m.Called(ctx, userId)
-
-	var r0 *models.UserSessionsV1
-	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, string) (*models.UserSessionsV1, error)); ok {
-		return rf(ctx, userId)
-	}
-	if rf, ok := ret.Get(0).(func(context.Context, string) *models.UserSessionsV1); ok {
-		r0 = rf(ctx, userId)
-	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*models.UserSessionsV1)
-		}
-	}
-
-	if rf, ok := ret.Get(1).(func(context.Context, string) error); ok {
-		r1 = rf(ctx, userId)
-	} else {
-		r1 = ret.Error(1)
-	}
-
-	return r0, r1
-}
-
 // StartNewSession provides a mock function with given fields: ctx, userId, ip, agent
 func (_m *Storage) StartNewSession(ctx context.Context, userId string, ip string, agent string) (int64, string, error) {
 	ret := _m.Called(ctx, userId, ip, agent)
@@ -97,6 +71,32 @@ func (_m *Storage) StartNewSession(ctx context.Context, userId string, ip string
 	}
 
 	return r0, r1, r2
+}
+
+// UserSessionsV1 provides a mock function with given fields: ctx, userId
+func (_m *Storage) UserSessionsV1(ctx context.Context, userId string) (*models.UserSessionsV1, error) {
+	ret := _m.Called(ctx, userId)
+
+	var r0 *models.UserSessionsV1
+	var r1 error
+	if rf, ok := ret.Get(0).(func(context.Context, string) (*models.UserSessionsV1, error)); ok {
+		return rf(ctx, userId)
+	}
+	if rf, ok := ret.Get(0).(func(context.Context, string) *models.UserSessionsV1); ok {
+		r0 = rf(ctx, userId)
+	} else {
+		if ret.Get(0) != nil {
+			r0 = ret.Get(0).(*models.UserSessionsV1)
+		}
+	}
+
+	if rf, ok := ret.Get(1).(func(context.Context, string) error); ok {
+		r1 = rf(ctx, userId)
+	} else {
+		r1 = ret.Error(1)
+	}
+
+	return r0, r1
 }
 
 // NewStorage creates a new instance of Storage. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.

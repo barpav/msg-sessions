@@ -48,7 +48,7 @@ func TestService_getActiveSessions(t *testing.T) {
 			testService: testService{
 				storage: func() *mocks.Storage {
 					s := mocks.NewStorage(t)
-					s.On("GetSessionsV1", mock.Anything, mock.Anything).Return(
+					s.On("UserSessionsV1", mock.Anything, mock.Anything).Return(
 						&models.UserSessionsV1{
 							Active: 0,
 						},
@@ -76,7 +76,7 @@ func TestService_getActiveSessions(t *testing.T) {
 			testService: testService{
 				storage: func() *mocks.Storage {
 					s := mocks.NewStorage(t)
-					s.On("GetSessionsV1", mock.Anything, mock.Anything).Return(
+					s.On("UserSessionsV1", mock.Anything, mock.Anything).Return(
 						&models.UserSessionsV1{
 							Active: 0,
 						},
@@ -100,7 +100,7 @@ func TestService_getActiveSessions(t *testing.T) {
 			testService: testService{
 				storage: func() *mocks.Storage {
 					s := mocks.NewStorage(t)
-					s.On("GetSessionsV1", mock.Anything, mock.Anything).Return(
+					s.On("UserSessionsV1", mock.Anything, mock.Anything).Return(
 						nil,
 						errors.New("test error"),
 					)
